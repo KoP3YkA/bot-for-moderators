@@ -90,6 +90,7 @@ import {Pred} from "../../../../logic/private/commands/Pred";
 import {Points} from "../../../../logic/private/commands/Points";
 import {PrivateHelp} from "../../../../logic/private/commands/PrivateHelp";
 import {CancelButton} from "../../../../logic/private/buttons/CancelButton";
+import {PrivateNews} from "../../../../logic/private/commands/PrivateNews";
 
 export class ApplicationInit {
 
@@ -189,6 +190,7 @@ export class ApplicationInit {
         new Points()
         new PrivateHelp()
         new CancelButton()
+        new PrivateNews()
     }
 
 }
