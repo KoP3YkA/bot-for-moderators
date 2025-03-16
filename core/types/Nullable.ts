@@ -1,0 +1,1 @@
+export type Nullable<T> = Promise<T | null>
