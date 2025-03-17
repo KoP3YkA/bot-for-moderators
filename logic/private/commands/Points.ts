@@ -41,7 +41,7 @@ export class Points extends BaseExecutor {
         let action : 'отняты' | 'установлены' | 'добавлены' = 'установлены';
 
         if (points < 0) {
-            if (target.points + points < 0) return await message.reply(`У модератора нет столько баллов!`)
+            if (target.points + points < -100000) return await message.reply(`У модератора и так мало баллов!`)
             await target.getStatisticService().points(target.points + points)
             action = 'отняты';
         } else if (points === 0) {
@@ -53,7 +53,7 @@ export class Points extends BaseExecutor {
             await target.getStatisticService().points(target.points + points)
             action = 'добавлены'
         } else {
-            if (points > 100_000) return await message.reply(`Нельзя установить столько баллов!`)
+            if (points > 100_000 || points < -100_000) return await message.reply(`Нельзя установить столько баллов!`)
             await target.getStatisticService().points(points)
             action = 'установлены';
         }
