@@ -10,6 +10,8 @@ import {ChatsModule} from "../../../core/classes/impl/database/modules/ChatsModu
 import {ChatType} from "../../../core/enums/ChatType";
 import {Messages} from "../../../core/namespaces/Messages";
 import {NameCase} from "../../../core/classes/impl/enums/NameCase";
+import {BanQuery} from "../../../core/classes/impl/database/queries/BanQuery";
+import {User} from "../../../core/classes/impl/entity/User";
 
 @ChatEventRouting(ChatEvent.InviteMember)
 export class MemberInvited extends BaseChatEventExecutor {
@@ -33,6 +35,16 @@ export class MemberInvited extends BaseChatEventExecutor {
         } else {
             await chat.init();
             if (chat.private && initiator.rank.weight <= Rank.DEFAULT.weight) return await target.kick();
+            const ban : BanQuery | null = await target.getChatBan();
+            if (ban) {
+                await target.kick();
+                await message.reply(`${await target.getMention(NameCase.NOM)}, находится в блокировке!\n\nИнформация о блокировке:\n${new User(ban.moderator).getOnlyMention('Модератор')} | ${ban.reason} | ${ban.date.toString}`)
+            }
+            await target.init();
+            if (target.globalBan) {
+                await target.kick();
+                await message.reply(`${await target.getMention(NameCase.NOM)}, находится в глобальной блокировке!\n\nИнформация о блокировке:\n${new User(target.globalBan.moderator).getOnlyMention('Модератор')} | ${target.globalBan.reason} | ${target.globalBan.date.toString}`)
+            }
             await message.send(Messages.GET_WELCOME_MESSAGE(await target.getMention(NameCase.NOM)))
         }
 
