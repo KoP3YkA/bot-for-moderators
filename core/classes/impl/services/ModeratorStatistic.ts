@@ -1,6 +1,8 @@
 import {Moderator} from "../entity/Moderator";
 import {Some} from "../../../types/Some";
 import {ModeratorsModule} from "../database/modules/ModeratorsModule";
+import {Cash} from "../../../namespaces/Cash";
+import {AdminsModule} from "../database/modules/AdminsModule";
 
 export class ModeratorStatistic {
 
@@ -44,6 +46,8 @@ ${this.user.globalBan ? '\n‼️ Имеется глобальная блоки
 
     public async kick() : Some {
         await ModeratorsModule.delete({userId: this.user.userId})
+        Cash.MODERATORS.delete(this.user.userId)
+        await AdminsModule.delete({userId: this.user.userId})
     }
 
     public async setRank(rank: string) : Some {

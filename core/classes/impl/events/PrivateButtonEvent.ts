@@ -28,19 +28,6 @@ export class PrivateButtonEvent extends BaseEvent {
         })
     }
 
-    private getCallbackButtons(button: PayloadButton[]) {
-        const keyboard = new KeyboardBuilder()
-        keyboard.inline(true)
-        for (const i of button) {
-            keyboard.callbackButton({
-                label: i.title,
-                color: i.color as ButtonColorUnion,
-                payload: i.payload
-            })
-        }
-        return keyboard
-    }
-
     public async editMessage(params: Partial<MessagesEditParams>, ...buttons: PayloadButton[]) : Some {
         const messageButtons : KeyboardBuilder | undefined = buttons.length < 1 ? undefined : this.getCallbackButtons(buttons)
         await Main.getApi().editMessage({

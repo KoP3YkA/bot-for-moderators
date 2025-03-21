@@ -130,4 +130,15 @@ export class ClientAPI {
         else return res.items[0].text ?? 'undefined'
     }
 
+    public async getUserMentionsByIds(userIds: number[]) : Promise<Map<number, string>> {
+        const res = await this.api.users.get({
+            user_ids: userIds
+        })
+        const map : Map<number, string> = new Map;
+        for (const i of res) {
+            map.set(i.id, `[id${i.id}|${i.first_name} ${i.last_name}]`)
+        }
+        return map;
+    }
+
 }

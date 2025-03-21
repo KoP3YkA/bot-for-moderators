@@ -153,19 +153,6 @@ export class ChatMessageEvent extends BaseEvent {
         return await this.apiEvent.reply(typeof message === 'string' ? {message: message, disable_mentions: true} : {...message, disable_mentions: true}).catch(err => {return err})
     }
 
-    private getCallbackButtons(button: PayloadButton[]) {
-        const keyboard = new KeyboardBuilder()
-        keyboard.inline(true)
-        for (const i of button) {
-            keyboard.callbackButton({
-                label: i.title,
-                color: i.color as ButtonColorUnion,
-                payload: i.payload
-            })
-        }
-        return keyboard
-    }
-
     public async replyWithButtons(message: MessagesSendParams | string, ...button: PayloadButton[]) : Some {
         const params : MessagesSendParams = typeof message === 'string' ? {message: message} : message
         return await this.reply({...params, keyboard: this.getCallbackButtons(button)})

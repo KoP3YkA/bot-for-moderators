@@ -9,6 +9,9 @@ import {ModeratorStatistic} from "../services/ModeratorStatistic";
 import {ModeratorType} from "../enums/ModeratorType";
 import {MessagesSendParams} from "vk-io/lib/api/schemas/params";
 import {Main} from "../../../../Main";
+import {Cash} from "../../../namespaces/Cash";
+import {AdminsModule} from "../database/modules/AdminsModule";
+import {AdminQuery} from "../database/queries/AdminQuery";
 
 export class Moderator extends User {
 
@@ -31,8 +34,31 @@ export class Moderator extends User {
     }
 
     public async isExists() : Promise<boolean> {
+        if (Cash.MODERATORS.has(this.userId)) return true;
         const results : ModeratorQuery[] = await ModeratorsModule.select({userId: this.userId})
+        const res = results.length > 0
+        if (res) Cash.MODERATORS.add(this.userId)
+        return res;
+    }
+
+    public async isAdmin() : Promise<boolean> {
+        const results : AdminQuery[] = await AdminsModule.select({userId: this.userId}, {order: 'id', limit: 1})
         return results.length > 0
+    }
+
+    public async getHead(withAdmins : boolean = false) : Promise<Moderator[]> {
+        const chiefRes = await ModeratorsModule.select({rang: ModeratorRank.CHIEF.tag, moderatorType: ModeratorType.BASIC.tag})
+        let moders : Moderator[] = [];
+        for (const i of chiefRes) {
+            moders.push(new Moderator(i.userId))
+        }
+
+        if (!withAdmins) return moders
+        const adminsRes = await AdminsModule.select({})
+        for (const i of adminsRes) {
+            moders.push(new Moderator(i.userId))
+        }
+        return moders
     }
 
     public async init() : Some {

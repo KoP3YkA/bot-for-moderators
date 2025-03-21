@@ -24,19 +24,6 @@ export class ChatExecutorEvent extends BaseEvent {
         this.chat = new Chat(event.chatId as number);
     }
 
-    private getCallbackButtons(button: PayloadButton[]) {
-        const keyboard = new KeyboardBuilder()
-        keyboard.inline(true)
-        for (const i of button) {
-            keyboard.callbackButton({
-                label: i.title,
-                color: i.color as ButtonColorUnion,
-                payload: i.payload
-            })
-        }
-        return keyboard
-    }
-
     /**
      * Без disable_mentions
      */

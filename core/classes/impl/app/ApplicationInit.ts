@@ -91,6 +91,14 @@ import {Points} from "../../../../logic/private/commands/Points";
 import {PrivateHelp} from "../../../../logic/private/commands/PrivateHelp";
 import {CancelButton} from "../../../../logic/private/buttons/CancelButton";
 import {PrivateNews} from "../../../../logic/private/commands/PrivateNews";
+import {MagazineButton} from "../../../../logic/private/buttons/MagazineButton";
+import {AdminsModule} from "../database/modules/AdminsModule";
+import {MagazineProductButton} from "../../../../logic/private/buttons/MagazineProductButton";
+import {RouletteExecutor} from "../../../../logic/private/buttons/products/RouletteExecutor";
+import {ZrmSignatureExecutor} from "../../../../logic/private/buttons/products/ZrmSignatureExecutor";
+import {HolidayExecutor} from "../../../../logic/private/buttons/products/HolidayExecutor";
+import {PunishmentRevocationExecutor} from "../../../../logic/private/buttons/products/PunishmentRevocationExecutor";
+import {FaStatsExecutor} from "../../../../logic/private/buttons/products/FaStatsExecutor";
 
 export class ApplicationInit {
 
@@ -104,6 +112,7 @@ export class ApplicationInit {
         new WarnsModule()
         new FirstMessagesModule()
         new ManagersModule()
+        new AdminsModule()
 
         new NoNickButton()
         new NlistButton()
@@ -191,6 +200,13 @@ export class ApplicationInit {
         new PrivateHelp()
         new CancelButton()
         new PrivateNews()
+        new MagazineButton()
+        new MagazineProductButton()
+        new RouletteExecutor()
+        new ZrmSignatureExecutor()
+        new HolidayExecutor()
+        new PunishmentRevocationExecutor()
+        new FaStatsExecutor()
     }
 
 }

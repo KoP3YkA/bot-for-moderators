@@ -25,19 +25,6 @@ export class PrivateMessageEvent extends BaseEvent {
         this.args = this.text.split(' ')
     }
 
-    private getCallbackButtons(button: PayloadButton[]) {
-        const keyboard = new KeyboardBuilder()
-        keyboard.inline(true)
-        for (const i of button) {
-            keyboard.callbackButton({
-                label: i.title,
-                color: i.color as ButtonColorUnion,
-                payload: i.payload
-            })
-        }
-        return keyboard
-    }
-
     public async getIdFromArgument(arg: number = 0, ignoreNicks : boolean = false) : Nullable<Moderator> {
         const allowGroups : boolean = false;
         const argsList : Array<string> = this.args;

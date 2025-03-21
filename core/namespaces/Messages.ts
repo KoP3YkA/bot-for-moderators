@@ -239,4 +239,20 @@ ${gbans.join('\n')}
 
     export const GET_WELCOME_MESSAGE = (nick: string) : string => `${nick}, добро пожаловать в беседу!\n\nНе забудь прочитать закреплённое сообщение!\nПосмотреть ссылки на официальные ресурсы проекта: «/info»`
 
+    // --------------------------------------------------------------
+
+    export const MAGAZINE_BUTTON : PayloadButton = {
+        title: 'Магазин',
+        color: Color.GREEN,
+        payload: {command: 'magazine'}
+    }
+
+    export const TO_STATISTIC = (user: number) : PayloadButton => {
+        return {
+            title: 'К статистике',
+            color: Color.BLUE,
+            payload: {command: 'statistic', user}
+        }
+    }
+
 }

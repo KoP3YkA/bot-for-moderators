@@ -26,14 +26,14 @@ export class PrivateKick extends BaseExecutor {
         if (reason.length > 500) return await message.reply(`Укажите причину меньше 500 символов!`)
 
         await target.init();
+        const isAdmin : boolean = await target.isAdmin();
+        if (!await target.isExists() && !isAdmin) return await message.reply(`Пользователь не является модератором!`)
 
-        if (!await target.isExists()) return await message.reply(`Пользователь не является модератором!`)
-
-        if (sender.userId !== target.userId && sender.rank.weight < ModeratorRank.CURATOR.weight && target.rank instanceof ModeratorRank) {
+        if ((!isAdmin && sender.rank.weight >= ModeratorRank.CHIEF.weight) && (sender.rank.weight < ModeratorRank.CURATOR.weight && target.rank instanceof ModeratorRank)) {
             return await message.reply(`Вы не можете взаимодействовать с другими пользователями`)
         }
 
-        if (sender.rank.weight <= target.rank.weight) {
+        if (!isAdmin && (sender.rank.weight <= target.rank.weight)) {
             return await message.reply(`Вы не можете взаимодействовать с этим пользователем!`)
         }
 

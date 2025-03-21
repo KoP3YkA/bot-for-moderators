@@ -21,6 +21,7 @@ import {PrivateButtonEvent} from "../events/PrivateButtonEvent";
 import {Moderator} from "../entity/Moderator";
 import {ModeratorRank} from "../enums/ModeratorRank";
 import {PanelModeratorRank} from "../enums/PanelModeratorRank";
+import {Cash} from "../../../namespaces/Cash";
 
 export class Client {
 
@@ -115,7 +116,8 @@ export class Client {
         if (!message.chatId) return;
 
         const chat : Chat = new Chat(message.chatId);
-        if (!await chat.isExists()) return;
+        if (!Cash.REGISTERED_CHATS.has(chat.chatId)) if (!await chat.isExists()) return;
+        Cash.REGISTERED_CHATS.add(chat.chatId);
 
         const event : ChatMessageEvent = new ChatMessageEvent(message as MessageContext & {chatId: number})
         const sender : Member = event.sender;

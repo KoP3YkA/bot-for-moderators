@@ -7,6 +7,7 @@ import {ModeratorRank} from "../../../core/classes/impl/enums/ModeratorRank";
 import {PayloadButton} from "../../../core/interfaces/buttons/PayloadButton";
 import {Color} from "../../../core/classes/impl/enums/Color";
 import {PanelModeratorRank} from "../../../core/classes/impl/enums/PanelModeratorRank";
+import {Messages} from "../../../core/namespaces/Messages";
 
 @PrivateButtonRouting('statistic')
 export class PrivateStatisticButton extends BasePrivateButtonExecutor {
@@ -35,10 +36,13 @@ export class PrivateStatisticButton extends BasePrivateButtonExecutor {
             payload: {command: 'edit_information', user: target.userId}
         }]
 
+        if (sender.userId === target.userId) keyboard.push(Messages.MAGAZINE_BUTTON)
+
         if (sender.rank instanceof ModeratorRank && sender.rank.weight >= ModeratorRank.CURATOR.weight) keyboard.push({
             title: 'Модераторы',
             color: Color.WHITE,
-            payload: {command: 'moderators'}
+            payload: {command: 'moderators'},
+            newRow: sender.userId === target.userId
         })
 
         await message.editMessage({

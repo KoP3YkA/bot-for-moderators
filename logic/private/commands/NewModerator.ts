@@ -8,6 +8,7 @@ import {ModeratorType} from "../../../core/classes/impl/enums/ModeratorType";
 import {ModeratorRank} from "../../../core/classes/impl/enums/ModeratorRank";
 import {PanelModeratorRank} from "../../../core/classes/impl/enums/PanelModeratorRank";
 import {Color} from "../../../core/classes/impl/enums/Color";
+import {AdminsModule} from "../../../core/classes/impl/database/modules/AdminsModule";
 
 @PrivateCommand('newmoderator')
 @PrivateCommand('добавитьмодератора')
@@ -28,7 +29,7 @@ export class NewModerator extends BaseExecutor {
         const target : Moderator | null = await message.getIdFromArgument(1, true)
         if (!target) return await message.reply(`Укажите ID модератора! Это может быть ссылка на его профиль ВК, его короткое имя или сразу VK ID.`)
 
-        if (await target.isExists()) return await message.reply(`Модератор уже зарегистрирован!`)
+        if (await target.isExists() || await target.isAdmin()) return await message.reply(`Модератор уже зарегистрирован!`)
 
         const nick : string = message.args[2];
         if (nick.length < 5 || nick.length > 64) return await message.reply(`Длина ника должна быть в пределах разумного!`)
@@ -36,30 +37,41 @@ export class NewModerator extends BaseExecutor {
         if (results.length > 0) return await message.reply(`Такой ник уже занят!`)
 
         const moderType : string = message.args[3];
-        if (!['основной', 'панель'].includes(moderType)) return await message.reply(`Укажите валидный состав модерации! Либо "основной" (т.е. модерация дискорд), либо "панель" (т.е. модерация беседы игроков)`)
+        if (!['основной', 'панель', 'админ'].includes(moderType)) return await message.reply(`Укажите валидный состав модерации! Либо "основной" (т.е. модерация дискорд), либо "панель" (т.е. модерация беседы игроков)`)
+        if (moderType === 'админ' && sender.rank.weight < ModeratorRank.CHIEF.weight) return await message.reply(`Вы не можете никого добавить в этот состав!`)
 
-        await ModeratorsModule.create({
-            userId: target.userId,
-            moderatorType: moderType === 'основной' ? ModeratorType.BASIC.tag : ModeratorType.PANEL.tag,
-            rang: moderType === 'основной' ? ModeratorRank.JUNIOR_MODERATOR.tag : PanelModeratorRank.MIDDLE_MODERATOR.tag,
-            nickname: nick,
-            firstAppointment: new Date(),
-            lastAppointment: new Date(),
-            hasPc: true,
-            points: 0,
-            discord: 'Заполни меня!',
-            forum: 'Заполни меня!',
-            age: 14,
-            preds: 0,
-            vigs: 0
-        })
+        if (moderType !== 'админ') {
+            await ModeratorsModule.create({
+                userId: target.userId,
+                moderatorType: moderType === 'основной' ? ModeratorType.BASIC.tag : ModeratorType.PANEL.tag,
+                rang: moderType === 'основной' ? ModeratorRank.JUNIOR_MODERATOR.tag : PanelModeratorRank.MIDDLE_MODERATOR.tag,
+                nickname: nick,
+                firstAppointment: new Date(),
+                lastAppointment: new Date(),
+                hasPc: true,
+                points: 0,
+                discord: 'Заполни меня!',
+                forum: 'Заполни меня!',
+                age: 14,
+                preds: 0,
+                vigs: 0
+            })
 
-        await target.send(`📗 Вы были назначены на должность «Младший Модератор» в ${moderType === 'основной' ? 'основной состав' : 'состав модерации беседы игроков'}! Не забудтье заполнить информацию про себя!`)
-        await message.reply('Успешно!', ...[{
-            title: 'Посмотреть статистику',
-            color: Color.BLUE,
-            payload: {command: 'statistic', user: target.userId}
-        }])
+            await target.send(`📗 Вы были назначены на должность «Младший Модератор» в ${moderType === 'основной' ? 'основной состав' : 'состав модерации беседы игроков'}! Не забудтье заполнить информацию про себя!`)
+            await message.reply('Успешно!', ...[{
+                title: 'Посмотреть статистику',
+                color: Color.BLUE,
+                payload: {command: 'statistic', user: target.userId}
+            }])
+        } else {
+            await AdminsModule.create({
+                userId: target.userId,
+                nick,
+                appointment: new Date()
+            })
+            await target.send(`📕 Вы были добавлены в направление «Администраторы»!`)
+            await message.reply(`Успешно!`)
+        }
 
     }
 

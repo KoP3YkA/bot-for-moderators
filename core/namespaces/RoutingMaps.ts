@@ -12,5 +12,7 @@ export namespace RoutingMaps {
     export const PRIVATE_BUTTONS : Map<string, any> = new Map();
     export const PRIVATE_MINIMAL_RANKS : Map<any, ModeratorRank> = new Map();
     export const PRIVATE_COMMANDS : Map<string, any> = new Map();
+    export const ADMIN_COMMANDS : Set<any> = new Set();
+    export const PRODUCTS_EXECUTORS : Map<string, any> = new Map();
 
 }
