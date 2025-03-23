@@ -23,11 +23,11 @@ export class PrivateStatisticButton extends BasePrivateButtonExecutor {
         }
 
         await target.init();
-        if (sender.rank.weight <= target.rank.weight && target.rank instanceof ModeratorRank && sender.userId !== target.userId && !isAdmin) {
+        if (!isAdmin && sender.rank.weight <= target.rank.weight && target.rank instanceof ModeratorRank && sender.userId !== target.userId) {
             return await message.snackbar('Вы не можете просматривать статистику данного пользователя!')
         }
 
-        if (target.rank instanceof PanelModeratorRank && sender.rank !== ModeratorRank.CHIEF && !isAdmin) {
+        if (!isAdmin && target.rank instanceof PanelModeratorRank && sender.rank !== ModeratorRank.CHIEF) {
             return await message.snackbar(`С модераторами МБИ может взаимодействовать только Главный Модератор!`)
         }
 
@@ -37,13 +37,20 @@ export class PrivateStatisticButton extends BasePrivateButtonExecutor {
             payload: {command: 'edit_information', user: target.userId}
         }]
 
-        if (sender.userId === target.userId) keyboard.push(Messages.MAGAZINE_BUTTON)
+        if (sender.userId === target.userId) {
+            keyboard.push(Messages.MAGAZINE_BUTTON)
+            keyboard.push({
+                title: 'Предложения по улучшению',
+                color: Color.RED,
+                payload: {command: 'suggestions'},
+                newRow: true
+            })
+        }
 
         if (sender.rank instanceof ModeratorRank && sender.rank.weight >= ModeratorRank.CURATOR.weight) keyboard.push({
             title: 'Модераторы',
             color: Color.WHITE,
             payload: {command: 'moderators'},
-            newRow: sender.userId === target.userId
         })
 
         await message.editMessage({

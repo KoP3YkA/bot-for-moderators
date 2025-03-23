@@ -12,6 +12,7 @@ import {Messages} from "../../core/namespaces/Messages";
 import {AdminMessageExecutor} from "./AdminMessageExecutor";
 import {ChangeForumInfo} from "./stages/ChangeForumInfo";
 import {System} from "../../core/namespaces/System";
+import {Suggestion} from "./stages/Suggestion";
 
 export class PrivateMessageExecutor extends BaseExecutor {
 
@@ -28,9 +29,12 @@ export class PrivateMessageExecutor extends BaseExecutor {
         if (Session.CHANGE_FORUM_STATS.has(sender.userId)) {
             return await new ChangeForumInfo().execute(message)
         }
+        if (Session.SUGGESTIONS.has(sender.userId)) {
+            return await new Suggestion().execute(message);
+        }
 
         let command : string = message.args[0];
-        if (System.COMMAND_PREFIXES.includes(command[0])) command.slice(1)
+        if (System.COMMAND_PREFIXES.includes(command[0])) command = command.slice(1)
         if (message.args.length > 0 && RoutingMaps.PRIVATE_COMMANDS.has(command)) {
             const executor = RoutingMaps.PRIVATE_COMMANDS.get(command) as Function;
             const _class = new (executor as { new(): BaseExecutor })()
@@ -42,13 +46,17 @@ export class PrivateMessageExecutor extends BaseExecutor {
             title: 'Изменение информации',
             color: Color.BLUE,
             payload: {command: 'edit_information', user: sender.userId}
-        }, Messages.MAGAZINE_BUTTON]
+        }, Messages.MAGAZINE_BUTTON, {
+            title: 'Предложения по улучшению',
+            color: Color.RED,
+            payload: {command: 'suggestions'},
+            newRow: true
+        }]
 
         if (sender.rank instanceof ModeratorRank && sender.rank.weight >= ModeratorRank.CURATOR.weight) keyboard.push({
             title: 'Модераторы',
             color: Color.WHITE,
             payload: {command: 'moderators'},
-            newRow: true
         })
 
         await message.reply(`Ваша статистика\n${sender.getStatisticService().getStatisticMessage()}`, ...keyboard)

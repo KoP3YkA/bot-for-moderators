@@ -100,6 +100,7 @@ import {HolidayExecutor} from "../../../../logic/private/buttons/products/Holida
 import {PunishmentRevocationExecutor} from "../../../../logic/private/buttons/products/PunishmentRevocationExecutor";
 import {FaStatsExecutor} from "../../../../logic/private/buttons/products/FaStatsExecutor";
 import {Gremovenick} from "../../../../logic/chat/commands/administrator/Gremovenick";
+import {SuggestionsButton} from "../../../../logic/private/buttons/SuggestionsButton";
 
 export class ApplicationInit {
 
@@ -209,6 +210,7 @@ export class ApplicationInit {
         new HolidayExecutor()
         new PunishmentRevocationExecutor()
         new FaStatsExecutor()
+        new SuggestionsButton()
     }
 
 }

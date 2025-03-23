@@ -10,7 +10,7 @@ export class AdminMessageExecutor extends BaseExecutor {
 
     public async execute(message: PrivateMessageEvent) : Some {
         let command : string = message.args[0];
-        if (System.COMMAND_PREFIXES.includes(command[0])) command.slice(1)
+        if (System.COMMAND_PREFIXES.includes(command[0])) command = command.slice(1)
 
         if (message.args.length > 0 && RoutingMaps.PRIVATE_COMMANDS.has(command)) {
             const executor = RoutingMaps.PRIVATE_COMMANDS.get(command) as Function;
