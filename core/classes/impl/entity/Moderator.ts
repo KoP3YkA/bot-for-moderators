@@ -12,6 +12,9 @@ import {Main} from "../../../../Main";
 import {Cash} from "../../../namespaces/Cash";
 import {AdminsModule} from "../database/modules/AdminsModule";
 import {AdminQuery} from "../database/queries/AdminQuery";
+import {PayloadButton} from "../../../interfaces/buttons/PayloadButton";
+import {KeyboardBuilder} from "vk-io";
+import {ButtonAdapter} from "../adapter/ButtonAdapter";
 
 export class Moderator extends User {
 
@@ -80,8 +83,9 @@ export class Moderator extends User {
         this.warns = moderator.vigs;
     }
 
-    public async send(message: string | MessagesSendParams) {
-        await Main.getApi().sendMessage(typeof message === 'string' ? {message: message, peer_id: this.userId, random_id: 0} : {...message, peer_id: this.userId, random_id: 0}).catch(err => {return err})
+    public async send(message: string | MessagesSendParams, ...buttons: PayloadButton[]) {
+        const keyboard : KeyboardBuilder = ButtonAdapter.getCallbackButtons(buttons);
+        await Main.getApi().sendMessage(typeof message === 'string' ? {message: message, peer_id: this.userId, random_id: 0, keyboard} : {...message, peer_id: this.userId, random_id: 0, keyboard}).catch(err => {return err})
     }
 
     public getStatisticService = () : ModeratorStatistic => new ModeratorStatistic(this);

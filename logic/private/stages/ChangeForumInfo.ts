@@ -3,6 +3,7 @@ import {PrivateMessageEvent} from "../../../core/classes/impl/events/PrivateMess
 import {Some} from "../../../core/types/Some";
 import {Session} from "../../../core/namespaces/Session";
 import {Moderator} from "../../../core/classes/impl/entity/Moderator";
+import {Messages} from "../../../core/namespaces/Messages";
 
 export class ChangeForumInfo extends BaseExecutor {
 
@@ -13,7 +14,7 @@ export class ChangeForumInfo extends BaseExecutor {
         if (!message.apiEvent.text) return await message.reply(`Укажи информацию!`)
         const head : Moderator[] = await sender.getHead(true);
         for (const i of head) {
-            await i.send(`✡️ Модератор ${sender.getOnlyMention(sender.nick)} ${prizeType === 'приз' ? 'выиграл' : 'купил'} изменение информации на форуме в рулетке! Вот его сообщение: ${message.text}`)
+            await i.send(`✡️ Модератор ${sender.getOnlyMention(sender.nick)} ${prizeType === 'приз' ? 'выиграл' : 'купил'} изменение информации на форуме${prizeType === 'приз' ? ' в рулетке' : ''}! Вот его сообщение: ${message.text}`, Messages.TO_STATISTIC(sender.userId))
         }
         await message.reply(`✅ Ваше сообщение было успешно отправлено отделу администрации! В скором времени указанная вами статистика будет изменена. Вот то, что вы отправили: ${message.text}`)
         Session.CHANGE_FORUM_STATS.delete(sender.userId);
