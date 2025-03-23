@@ -100,7 +100,7 @@ export class Client {
         const _class = new (executor as { new(): BaseExecutor })()
 
         const sender : Moderator = message.sender;
-        if (!await sender.isExists()) return await message.snackbar('Вы не модератор!');
+        if (!await sender.isExists() && !await sender.isAdmin()) return await message.snackbar('Вы не модератор!');
 
         if (RoutingMaps.PRIVATE_MINIMAL_RANKS.has(_class)) {
             const minimalRank : ModeratorRank = RoutingMaps.PRIVATE_MINIMAL_RANKS.get(_class) as Rank;

@@ -16,17 +16,18 @@ export class PrivateStatisticButton extends BasePrivateButtonExecutor {
         const sender : Moderator = message.sender;
         const target : Moderator = new Moderator(message.getField<number>('user'));
         await sender.init();
+        const isAdmin = await sender.isAdmin();
 
-        if (sender.userId !== target.userId) {
+        if (sender.userId !== target.userId && !isAdmin) {
             if (sender.rank.weight < ModeratorRank.CURATOR.weight) return await message.reply(`Вы не можете просматривать чужую статистику!`)
         }
 
         await target.init();
-        if (sender.rank.weight <= target.rank.weight && target.rank instanceof ModeratorRank && sender.userId !== target.userId) {
+        if (sender.rank.weight <= target.rank.weight && target.rank instanceof ModeratorRank && sender.userId !== target.userId && !isAdmin) {
             return await message.snackbar('Вы не можете просматривать статистику данного пользователя!')
         }
 
-        if (target.rank instanceof PanelModeratorRank && sender.rank !== ModeratorRank.CHIEF) {
+        if (target.rank instanceof PanelModeratorRank && sender.rank !== ModeratorRank.CHIEF && !isAdmin) {
             return await message.snackbar(`С модераторами МБИ может взаимодействовать только Главный Модератор!`)
         }
 

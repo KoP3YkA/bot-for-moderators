@@ -55,6 +55,7 @@ export class Command {
     public static GREMOVEROLE : Command = new Command('gremoverole', 'забрать у пользователя роли во всех чатах', Rank.MIDDLE_ADMINISTRATOR)
     public static ADDJRADMIN : Command = new Command('addjradmin', 'выдать права младшего администратора', Rank.MIDDLE_ADMINISTRATOR)
     public static URKICK : Command = new Command('urkick', 'кикнуть пользователей без роли', Rank.MIDDLE_ADMINISTRATOR)
+    public static GREMOVENICK : Command = new Command('gremovenick', 'убрать ник у пользователя во всех беседах', Rank.MIDDLE_ADMINISTRATOR)
 
     // Chief Administrator
     public static ADDADMIN : Command = new Command('addadmin', 'выдать права администратора', Rank.CHIEF_ADMINISTRATOR)

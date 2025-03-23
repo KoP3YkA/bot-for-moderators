@@ -99,6 +99,7 @@ import {ZrmSignatureExecutor} from "../../../../logic/private/buttons/products/Z
 import {HolidayExecutor} from "../../../../logic/private/buttons/products/HolidayExecutor";
 import {PunishmentRevocationExecutor} from "../../../../logic/private/buttons/products/PunishmentRevocationExecutor";
 import {FaStatsExecutor} from "../../../../logic/private/buttons/products/FaStatsExecutor";
+import {Gremovenick} from "../../../../logic/chat/commands/administrator/Gremovenick";
 
 export class ApplicationInit {
 
@@ -180,6 +181,7 @@ export class ApplicationInit {
         new Urkick()
         new Addadmin()
         new Gzov()
+        new Gremovenick()
 
         new MemberLeave()
         new MemberJoinedByLink()
