@@ -9,6 +9,9 @@ import {WarnQuery} from "../../core/classes/impl/database/queries/WarnQuery";
 import {BanQuery} from "../../core/classes/impl/database/queries/BanQuery";
 import {GlobalBansModule} from "../../core/classes/impl/database/modules/GlobalBansModule";
 import {GlobalBanQuery} from "../../core/classes/impl/database/queries/GlobalBanQuery";
+import {ChatQuery} from "../../core/classes/impl/database/queries/ChatQuery";
+import {ChatsModule} from "../../core/classes/impl/database/modules/ChatsModule";
+import {Chats} from "../chat/commands/administrator/Chats";
 
 export interface NicksMessage {
     message: string,
@@ -207,6 +210,23 @@ ${warns.join('\n')}
             message: `${await sender.getMention(NameCase.NOM)}, ${!chat.filter ? 'включил' : 'выключил'} фильтер!`,
             buttons: Messages.GET_FILTER_BUTTONS(!chat.filter),
             error: false
+        }
+    }
+
+    public static async getChats(page: number) : Promise<NicksMessage> {
+        const allChats : ChatQuery[] = await ChatsModule.select({}, {limit: 10, order: 'id', offset: (page - 1) * 10})
+        const chats : string[] = [];
+        let count : number = (page - 1) * 10;
+        for (const i of allChats) {
+            count++;
+            const chat : Chat = new Chat(i.chatId);
+            chats.push(`${count}) ${await chat.getTitle()} | ${await chat.getOwner().then(owner => owner.getOnlyMention(`Владелец`))} | ${i.chatId}`)
+        }
+        if (chats.length < 1) chats.push(`Зарегистрированных чатов нет!`)
+        return {
+            message: Messages.GET_CHATS_MESSAGE(page, chats),
+            buttons: Messages.GET_CHATS_BUTTONS(page),
+            error: allChats.length < 1
         }
     }
 

@@ -101,6 +101,9 @@ import {PunishmentRevocationExecutor} from "../../../../logic/private/buttons/pr
 import {FaStatsExecutor} from "../../../../logic/private/buttons/products/FaStatsExecutor";
 import {Gremovenick} from "../../../../logic/chat/commands/administrator/Gremovenick";
 import {SuggestionsButton} from "../../../../logic/private/buttons/SuggestionsButton";
+import {Chats} from "../../../../logic/chat/commands/administrator/Chats";
+import {ChatsMinusButton} from "../../../../logic/chat/buttons/ChatsMinusButton";
+import {ChatsPlusButton} from "../../../../logic/chat/buttons/ChatsPlusButton";
 
 export class ApplicationInit {
 
@@ -138,6 +141,8 @@ export class ApplicationInit {
         new GbanlistPlusButton()
         new FilterButton()
         new GunbanButton()
+        new ChatsMinusButton()
+        new ChatsPlusButton()
 
         new Help()
         new Info()
@@ -183,6 +188,7 @@ export class ApplicationInit {
         new Addadmin()
         new Gzov()
         new Gremovenick()
+        new Chats()
 
         new MemberLeave()
         new MemberJoinedByLink()

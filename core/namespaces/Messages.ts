@@ -22,6 +22,25 @@ export namespace Messages {
 Вы не можете взаимодействовать с данным пользователем!
     `
 
+    export const GET_CHATS_BUTTONS = (page: number) : PayloadButton[] => {
+        return [{
+            title: '⏪',
+            color: Color.RED,
+            payload: {command: 'chats_minus', page: page}
+        }, {
+            title: '⏩',
+            color: Color.GREEN,
+            payload: {command: 'chats_plus', page: page}
+        }]
+    }
+
+    export const GET_CHATS_MESSAGE = (page: number, chats: string[]) => {
+        return `
+Список зарегистрированных чатов [${page} страница]:
+${chats.join('\n')}
+        `
+    }
+
     export const GET_NLIST_BUTTONS = (page: number) : PayloadButton[] => {
         return [{
             title: '⏪',
