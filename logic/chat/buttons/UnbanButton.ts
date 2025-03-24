@@ -21,7 +21,7 @@ export class UnbanButton extends BaseButtonExecutor {
 
         await message.editMessage({keyboard: null, message: await message.getMessageText()})
         await message.send({
-            message: `${await sender.getMention(NameCase.NOM)} разблокировал-(а) ${await writtenUser.getMention(NameCase.DAT)}`
+            message: `${await sender.getMention(NameCase.NOM)} разблокировал-(а) ${await writtenUser.getMention(NameCase.GEN)}`
         })
 
     }
