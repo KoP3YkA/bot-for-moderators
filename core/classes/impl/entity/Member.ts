@@ -32,17 +32,11 @@ export class Member extends User {
 
     public async init() : Nothing {
         await super.init();
-        const rankResults : PermissionQuery[] = await PermissionsModule.select({
-            userId: this.userId,
-            chatId: this.chatId
-        }, {order: 'id', limit: 1})
-        if (rankResults.length < 1) this.rank = Rank.DEFAULT;
-        else this.rank = rankResults[0].role;
-
         const managerResults : ManagerQuery[] = await ManagersModule.select({
             userId: this.userId
         }, {order: 'id', limit: 1})
         if (managerResults.length > 0) this.rank = managerResults[0].rang;
+        else this.rank = Rank.DEFAULT
 
         const nickResults : NicknameQuery[] = await NicknamesModule.select({
             userId: this.userId,

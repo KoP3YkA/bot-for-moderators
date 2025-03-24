@@ -6,6 +6,7 @@ import {WithAlias} from "../../../../core/annotations/routing/WithAlias";
 import {Member} from "../../../../core/classes/impl/entity/Member";
 import {Rank} from "../../../../core/classes/impl/enums/Rank";
 import {NameCase} from "../../../../core/classes/impl/enums/NameCase";
+import {ManagersModule} from "../../../../core/classes/impl/database/modules/ManagersModule";
 
 @NamedCommand('addmoder')
 @WithAlias('аддмодер')
@@ -22,7 +23,8 @@ export class AddModer extends BaseCommandExecutor {
         if (writtenUser.rank.weight >= sender.rank.weight) return await message.replyCannotUseForThisUser();
         if (writtenUser.rank.weight >= Rank.JUNIOR_MODERATOR.weight) return await message.reply(`У пользователя уже имеется такая роль!`)
 
-        await writtenUser.punishmentsService().setRank(Rank.JUNIOR_MODERATOR)
+        await ManagersModule.delete({userId: writtenUser.userId})
+        await ManagersModule.create({userId: writtenUser.userId, rang: Rank.JUNIOR_MODERATOR.tag})
 
         await message.reply(`
 ${await sender.getMention(NameCase.NOM)} выдал-(а) права модератора ${await writtenUser.getMention(NameCase.DAT)}        

@@ -6,6 +6,7 @@ import {WithAlias} from "../../../../core/annotations/routing/WithAlias";
 import {Member} from "../../../../core/classes/impl/entity/Member";
 import {Rank} from "../../../../core/classes/impl/enums/Rank";
 import {NameCase} from "../../../../core/classes/impl/enums/NameCase";
+import {ManagersModule} from "../../../../core/classes/impl/database/modules/ManagersModule";
 
 @NamedCommand('addjradmin')
 @WithAlias('jradmin')
@@ -23,7 +24,8 @@ export class Addjradmin extends BaseCommandExecutor {
         if (writtenUser.rank.weight >= sender.rank.weight) return await message.replyCannotUseForThisUser();
         if (writtenUser.rank.weight >= Rank.JUNIOR_ADMINISTRATOR.weight) return await message.reply(`У пользователя уже имеется такая роль!`)
 
-        await writtenUser.punishmentsService().setRank(Rank.JUNIOR_ADMINISTRATOR)
+        await ManagersModule.delete({userId: writtenUser.userId})
+        await ManagersModule.create({userId: writtenUser.userId, rang: Rank.JUNIOR_ADMINISTRATOR.tag})
 
         await message.reply(`
 ${await sender.getMention(NameCase.NOM)} выдал-(а) права младшего администратора ${await writtenUser.getMention(NameCase.DAT)}        

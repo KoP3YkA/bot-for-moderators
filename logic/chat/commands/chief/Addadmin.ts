@@ -28,7 +28,7 @@ export class Addadmin extends BaseCommandExecutor {
         await ManagersModule.delete({userId: writtenUser.userId})
         await ManagersModule.create({userId: writtenUser.userId, rang: Rank.MIDDLE_ADMINISTRATOR.tag})
 
-        await message.reply(`${await sender.getMention(NameCase.NOM)} выдал-(а) глобально права администратора ${await writtenUser.getMention(NameCase.DAT)}!`)
+        await message.reply(`${await sender.getMention(NameCase.NOM)} выдал-(а) права администратора ${await writtenUser.getMention(NameCase.DAT)}!`)
     }
 
 }

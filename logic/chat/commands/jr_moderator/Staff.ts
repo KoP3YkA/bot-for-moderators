@@ -15,7 +15,6 @@ export class Staff extends BaseCommandExecutor {
     public override async execute(message: ChatMessageEvent) : Some {
         const chat : Chat = message.chat;
         await chat.init();
-        const staff : Map<Member, Rank> = chat.staff;
 
         const juniorModerators : string[] = []
         const seniorModerators : string[] = []
@@ -23,16 +22,13 @@ export class Staff extends BaseCommandExecutor {
         const middleAdministrators : string[] = []
         const chiefAdministrators : string[] = []
 
-        for (const i of staff) {
-            if (i[1] === Rank.JUNIOR_MODERATOR) juniorModerators.push(await i[0].getMention(NameCase.NOM))
-            else if (i[1] === Rank.SENIOR_MODERATOR) seniorModerators.push(await i[0].getMention(NameCase.NOM))
-            else if (i[1] === Rank.JUNIOR_ADMINISTRATOR) juniorAdministrators.push(await i[0].getMention(NameCase.NOM))
-        }
-
         for (const i of (await chat.getManagers())) {
             await i.init()
-            if (i.rank === Rank.MIDDLE_ADMINISTRATOR) middleAdministrators.push(await i.getMention(NameCase.NOM))
-            if (i.rank === Rank.CHIEF_ADMINISTRATOR) chiefAdministrators.push(await i.getMention(NameCase.NOM))
+            if (i.rank === Rank.JUNIOR_MODERATOR) juniorModerators.push(await i.getMention(NameCase.NOM))
+            else if (i.rank === Rank.SENIOR_MODERATOR) seniorModerators.push(await i.getMention(NameCase.NOM))
+            else if (i.rank === Rank.JUNIOR_ADMINISTRATOR) juniorAdministrators.push(await i.getMention(NameCase.NOM))
+            else if (i.rank === Rank.MIDDLE_ADMINISTRATOR) middleAdministrators.push(await i.getMention(NameCase.NOM))
+            else if (i.rank === Rank.CHIEF_ADMINISTRATOR) chiefAdministrators.push(await i.getMention(NameCase.NOM))
         }
 
         if (chiefAdministrators.length < 1) chiefAdministrators.push('Отсутствуют')
