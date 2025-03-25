@@ -24,7 +24,7 @@ export class Addsenmoder extends BaseCommandExecutor {
         await writtenUser.punishmentsService().setRank(Rank.SENIOR_MODERATOR)
 
         await message.reply(`
-${await sender.getMention(NameCase.NOM)} выдал-(а) права старшего модератора модератора ${await writtenUser.getMention(NameCase.DAT)}        
+${await sender.getMention(NameCase.NOM)} выдал-(а) права старшего модератора ${await writtenUser.getMention(NameCase.DAT)}        
         `)
     }
 

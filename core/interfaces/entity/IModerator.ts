@@ -13,4 +13,5 @@ export interface IModerator {
     age: any, // Moderator`s age
     preds: any, // Preds count
     vigs: any, // Vigs count
+    aban: any; // Admin ban exists
 }

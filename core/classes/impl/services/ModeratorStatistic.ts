@@ -25,6 +25,7 @@ export class ModeratorStatistic {
 🅰️ Выговоры — ${this.user.warns}/3
 🅱️ Предупреждения — ${this.user.preds}/2
 ${this.user.globalBan ? '\n‼️ Имеется глобальная блокировка! ‼️' : ''}
+${this.user.aban ? '\n❄️ Права временно заморожены ❄️' : ''}
         `
     }
 
@@ -64,6 +65,10 @@ ${this.user.globalBan ? '\n‼️ Имеется глобальная блоки
 
     public async points(newPoints: number) : Some {
         await ModeratorsModule.update({points: newPoints}, {userId: this.user.userId})
+    }
+
+    public async aban(state: boolean) : Some {
+        await ModeratorsModule.update({aban: state}, {userId: this.user.userId})
     }
 
 }

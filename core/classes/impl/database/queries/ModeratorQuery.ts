@@ -85,6 +85,10 @@ export class ModeratorQuery extends QueryResult implements IModerator, Validate 
     @Min(0)
     public vigs : number = 0;
 
+    @Result()
+    @IsBoolean
+    public aban : boolean = false;
+
     public validateErrors: Set<string> = new Set();
 
 }

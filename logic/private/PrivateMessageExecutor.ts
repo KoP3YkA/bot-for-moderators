@@ -18,10 +18,12 @@ export class PrivateMessageExecutor extends BaseExecutor {
 
     public async execute(message: PrivateMessageEvent) : Nothing {
         const sender : Moderator = message.sender;
+        await sender.init();
         if (await sender.isAdmin()) {
             return await new AdminMessageExecutor().execute(message);
         }
         if (!await sender.isExists()) return await message.reply(`Я тебя не знаю! Если ты являешься модератором, то напиши своему главному модератору, он добавит тебя в мою базу данных!`)
+        if (sender.aban) return await message.reply(`🚷 Ваши права были временно заморожены! В данный момент Вы не можете использовать бота.`)
 
         if (Session.EDIT_STATS.has(sender.userId)) {
             return await new EditStats().execute(message)
@@ -41,7 +43,6 @@ export class PrivateMessageExecutor extends BaseExecutor {
             return await _class.execute(message);
         }
 
-        await sender.init();
         const keyboard : PayloadButton[] = [{
             title: 'Изменение информации',
             color: Color.BLUE,

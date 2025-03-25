@@ -28,6 +28,7 @@ export class Moderator extends User {
     public discord!: string;
     public forum!: string;
     public age!: number;
+    public aban!: boolean;
 
     public preds!: number
     public warns!: number
@@ -81,6 +82,7 @@ export class Moderator extends User {
         this.age = moderator.age;
         this.preds = moderator.preds;
         this.warns = moderator.vigs;
+        this.aban = moderator.aban;
     }
 
     public async send(message: string | MessagesSendParams, ...buttons: PayloadButton[]) {
