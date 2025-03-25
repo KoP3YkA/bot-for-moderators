@@ -23,7 +23,6 @@ import {ModeratorQuery} from "../queries/ModeratorQuery";
 
 @Table
 @NamedTable('moderators')
-@Migration(MigrationType.COLUMNS)
 export class ModeratorsModule extends Module implements IModerator {
 
     @AutoIncrementId
@@ -68,10 +67,7 @@ export class ModeratorsModule extends Module implements IModerator {
     @Integer
     public vigs : number = 0;
 
-    @Column({
-        type: ColumnType.BOOLEAN,
-        defaultValue: false,
-    })
+    @FalseBooleanColumn
     public aban : boolean = false;
 
     public static create = async (values: { [key: string]: any }) : Some => await new ModelAdapter(ModeratorsModule).create(values);
