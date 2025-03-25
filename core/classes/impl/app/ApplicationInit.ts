@@ -104,6 +104,7 @@ import {SuggestionsButton} from "../../../../logic/private/buttons/SuggestionsBu
 import {Chats} from "../../../../logic/chat/commands/administrator/Chats";
 import {ChatsMinusButton} from "../../../../logic/chat/buttons/ChatsMinusButton";
 import {ChatsPlusButton} from "../../../../logic/chat/buttons/ChatsPlusButton";
+import {AdminBan} from "../../../../logic/private/commands/AdminBan";
 
 export class ApplicationInit {
 
@@ -217,6 +218,7 @@ export class ApplicationInit {
         new PunishmentRevocationExecutor()
         new FaStatsExecutor()
         new SuggestionsButton()
+        new AdminBan()
     }
 
 }
