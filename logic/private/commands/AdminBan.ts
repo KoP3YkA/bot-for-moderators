@@ -42,6 +42,7 @@ export class AdminBan extends BaseExecutor {
 
         const target : Moderator | null = await message.getIdFromArgument(2);
         if (!target) return await message.reply(`Укажите валидного модератора!`)
+        await target.init()
 
         if (!await target.isExists()) return await message.reply(`Пользователь не модератор!`)
         if (target.rank instanceof PanelModeratorRank && sender.rank.weight < ModeratorRank.CHIEF.weight) return await message.reply(`С модераторами МБИ может взаимодействовать только Главный Модератор!`);
