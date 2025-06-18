@@ -10,7 +10,7 @@ export namespace EnvironNamespace {
         host: Environ.getEnvironByField<string>('MYSQL_HOST'),
         user: Environ.getEnvironByField<string>('MYSQL_USER'),
         port: +Environ.getEnvironByField<string>('MYSQL_PORT'),
-        password: Environ.getEnvironByField<string>('MYSQL_PASSWORD').replace('null', '')
+        password: Environ.getEnvironByField<string>('MYSQL_PASSWORD')
     }
 
 }

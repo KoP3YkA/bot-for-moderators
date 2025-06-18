@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-dotenv.config({override: true})
+dotenv.config({ override: true })
 import {Nothing} from "./core/types/Nothing";
 import {ApplicationInit} from "./core/classes/impl/app/ApplicationInit";
 import {Client} from "./core/classes/impl/app/Client";
